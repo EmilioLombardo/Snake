@@ -1,3 +1,7 @@
 .DS_Store
+__pycache__
+.tags
+*.swp
+*.swo
 snake_sfx.url
 FIX ME.png
