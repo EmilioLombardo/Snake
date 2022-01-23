@@ -1,12 +1,14 @@
-from os import chdir as cd
+import os
 import sys
 import random
 from numpy import array
 
 import pygame
 
-PROGRAM_DIR = "/Users/emiliolombardo/Documents/PythonGreier/Snake/"
-cd(PROGRAM_DIR)
+# Make sure relative paths work (for sound files)
+file_path = os.path.realpath(__file__)
+directory = "/".join(file_path.split("/")[:-1])
+os.chdir(directory)
 
 COLS = 10
 ROWS = 10
