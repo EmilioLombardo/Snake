@@ -17,6 +17,7 @@ WIDTH = 500
 HEIGHT = WIDTH * (ROWS // COLS)
 CELL_W = WIDTH // COLS
 
+
 class Text:
     margin = 40
     row_h = HEIGHT//8
@@ -40,7 +41,7 @@ class Text:
         self.font = font
         self.text_col = text_col
 
-        self.column = column # "left", "right" or "centre"
+        self.column = column  # "left", "right" or "centre"
         self.row = row
 
         self.render = self.font.render(self.text, True, self.text_col)
@@ -79,8 +80,8 @@ class Text:
             pygame.draw.rect(dest_surf, bg_colour, text_rect)
 
         else:
-            raise Exception("bg argument not valid: "
-                    + "bg must be either a pygame surface or an RGB colour")
+            raise Exception("bg argument not valid: bg must be either" +
+                            "a pygame surface or an RGB colour")
 
         # Draw text
         dest_surf.blit(self.render, pos)
@@ -113,7 +114,7 @@ GREY = (60, 60, 60)
 BLUE = (80, 110, 255)
 RED = (255, 50, 50)
 GREEN = (64, 222, 106)
-DARK_GREEN = (49, 189, 86) # Unused
+DARK_GREEN = (49, 189, 86)  # Unused
 
 UP_KEYS = [pygame.K_UP, pygame.K_w, pygame.K_i]
 LEFT_KEYS = [pygame.K_LEFT, pygame.K_a, pygame.K_j]
@@ -125,18 +126,18 @@ CONFIRM_KEYS = [pygame.K_SPACE, pygame.K_RETURN]
 
 trills = [pygame.mixer.Sound(f"sfx/Trill_SFX/trill_{i}.mp3")
           for i in range(1, 9)]
-game_over_sound = pygame.mixer.Sound(f"sfx/game_over.mp3")
-perfect_score_sound = pygame.mixer.Sound(f"sfx/perfect_score.mp3")
-pause_sound = pygame.mixer.Sound(f"sfx/pause.mp3")
-resume_sound = pygame.mixer.Sound(f"sfx/resume.mp3")
-normal_start_sound = pygame.mixer.Sound(f"sfx/start_normal.mp3")
-fast_start_sound = pygame.mixer.Sound(f"sfx/start_fast.mp3")
+game_over_sound = pygame.mixer.Sound("sfx/game_over.mp3")
+perfect_score_sound = pygame.mixer.Sound("sfx/perfect_score.mp3")
+pause_sound = pygame.mixer.Sound("sfx/pause.mp3")
+resume_sound = pygame.mixer.Sound("sfx/resume.mp3")
+normal_start_sound = pygame.mixer.Sound("sfx/start_normal.mp3")
+fast_start_sound = pygame.mixer.Sound("sfx/start_fast.mp3")
 
 DELTA = (
-    array((0, -1)), # 0: Up
-    array((-1, 0)), # 1: Left
-    array((0, 1)), # 2: Down
-    array((1, 0)) # 3: Right
+    array((0, -1)),  # 0: Up
+    array((-1, 0)),  # 1: Left
+    array((0, 1)),  # 2: Down
+    array((1, 0))  # 3: Right
     )
 
 DELTA_LIST = [list(arr) for arr in DELTA]
@@ -154,11 +155,13 @@ bg.fill(bg_colour)
 
 screen.blit(bg, (0, 0))
 
+
 def cell(grid_x, grid_y):
     """Returns cell number given grid coordinates."""
 
     c = grid_x + grid_y * COLS
     return c
+
 
 def pos(cell_num):
     """Returns grid coordinates given cell number."""
@@ -171,6 +174,7 @@ def pos(cell_num):
     x = c % COLS
     y = c // COLS
     return array((x, y))
+
 
 def step(starting_cell, *dir_list):
     """Starting from starting_cell and moving through the step(s) in dir_list,
@@ -195,12 +199,14 @@ def step(starting_cell, *dir_list):
     return c
     # return cell(new_x, new_y)
 
+
 def pixel_pos(c):
     """Returns screen coordinates given cell number."""
 
     grid_x, grid_y = pos(c)
     pixel_x, pixel_y = grid_x * CELL_W, grid_y * CELL_W
     return array((pixel_x, pixel_y))
+
 
 def draw_cell(dest_surf, c, connections=None, colour=WHITE):
     """Draws a rectangle at position in grid (given by cell number)."""
@@ -217,10 +223,14 @@ def draw_cell(dest_surf, c, connections=None, colour=WHITE):
         bottom_rect = (x0 + margin, y0 + margin + w, w, margin)
         right_rect = (x0 + margin + w, y0 + margin, margin, w)
 
-        if 0 in connections: pygame.draw.rect(dest_surf, colour, top_rect)
-        if 1 in connections: pygame.draw.rect(dest_surf, colour, left_rect)
-        if 2 in connections: pygame.draw.rect(dest_surf, colour, bottom_rect)
-        if 3 in connections: pygame.draw.rect(dest_surf, colour, right_rect)
+        if 0 in connections:
+            pygame.draw.rect(dest_surf, colour, top_rect)
+        if 1 in connections:
+            pygame.draw.rect(dest_surf, colour, left_rect)
+        if 2 in connections:
+            pygame.draw.rect(dest_surf, colour, bottom_rect)
+        if 3 in connections:
+            pygame.draw.rect(dest_surf, colour, right_rect)
 
         central_rect = (x0 + margin, y0 + margin, w, w)
         pygame.draw.rect(dest_surf, colour, central_rect)
@@ -229,6 +239,7 @@ def draw_cell(dest_surf, c, connections=None, colour=WHITE):
         pygame.draw.rect(dest_surf, colour, cell_rect)
 
     return cell_rect
+
 
 def menu(speed, muted):
     pygame.mouse.set_visible(True)
@@ -242,8 +253,10 @@ def menu(speed, muted):
 
     title_text = Text("SNAKE", title_font, GREEN, "centre", 1)
 
-    normal_mode_btn = Text("NORMAL SPEED", medium_font, WHITE, "centre", 3)
-    fast_mode_btn = Text("SUPER SPEED", medium_font, WHITE, "centre", 4)
+    normal_mode_btn = Text(
+            "NORMAL SPEED", medium_font, btn_text_col, "centre", 3)
+    fast_mode_btn = Text(
+            "SUPER SPEED", medium_font, btn_text_col, "centre", 4)
 
     bg.fill(bg_colour)
     screen.blit(bg, (0, 0))
@@ -266,7 +279,6 @@ def menu(speed, muted):
             p1 = midright[0] + size, midright[1]
             p2 = array(p1) + array((size, -size/2))
             p3 = array(p1) + array((size, size/2))
-
 
         return p1, p2, p3
 
@@ -295,11 +307,11 @@ def menu(speed, muted):
 
         if speed == "normal":
             normal_mode_btn.text_col = BLUE
-            fast_mode_btn.text_col = WHITE
+            fast_mode_btn.text_col = btn_text_col
 
         elif speed == "fast":
             fast_mode_btn.text_col = BLUE
-            normal_mode_btn.text_col = WHITE
+            normal_mode_btn.text_col = btn_text_col
 
         for e in events:
             etype = e.type
@@ -325,19 +337,20 @@ def menu(speed, muted):
         clock.tick(FPS)
         update_display()
 
+
 def game_start(speed, muted):
 
     bg_colour = BLACK
     frame_counter = 0
 
     if speed == "normal":
-        MVMT_FPC = 10 # "FPC" stands for "frames per cell"
+        MVMT_FPC = 10  # "FPC" stands for "frames per cell"
     elif speed == "fast":
         MVMT_FPC = 6
 
-    mvmt_bonus_delay = 0 # Controls extra time given to move before crashing
-    mvmt_timer = MVMT_FPC # Decrements by 1 each frame before resetting
-                          # Snake moves forward when mvmt_timer reaches 0
+    mvmt_bonus_delay = 0  # Controls extra time given to move before crashing
+    mvmt_timer = MVMT_FPC  # Decrements by 1 each frame before resetting
+    # (Snake moves forward when mvmt_timer reaches 0)
 
     dir_buffer = []
 
@@ -446,7 +459,8 @@ def game_start(speed, muted):
 
             if key == pygame.K_m:
                 # Toggle mute
-                if not muted: pygame.mixer.stop()
+                if not muted:
+                    pygame.mixer.stop()
                 muted = not muted
 
             if paused:
@@ -506,21 +520,20 @@ def game_start(speed, muted):
                            if c not in invalid_spots]
 
             if (mvmt_timer <= 0) and (input_time < MVMT_FPC//2) and (
-                next_head in snake[1:]) and (
-                step(curr_head, prev_d, d) not in snake[1:] + [None]) and (
-                prev_d != d):
+                    next_head in snake[1:]) and (
+                    step(curr_head, prev_d, d) not in snake[1:] + [None]) and (
+                    prev_d != d):
                 # If about to crash into snake, but the crash could be avoided
-                # by moving forward one more square before turning, then buffer
-                # the right inputs to do so.
+                # by moving forward one more square before turning, then
+                # automatically buffer the right inputs to do so.
                 # If the input is too early (input_time > MVMT_FPC//2), then
                 # there will be no mercy.
                 dir_buffer = [(prev_d, 1), (d, 1)]
                 mvmt_bonus_delay = 0
-                print(f"VÆR SÅ GOD!!!!")
+                print("VÆR SÅ GOD!!!!")
 
             elif (mvmt_timer + mvmt_bonus_delay <= 0) and (
-                next_head is None or
-                next_head in snake[1:]):
+                    next_head is None or next_head in snake[1:]):
                 # If extra time delay has run out and snake crashes into
                 # wall or itself
 
@@ -551,8 +564,9 @@ def game_start(speed, muted):
                     del snake[0]
                 else:
                     # If snake has got the food, *don't* remove the backmost
-                    # cell in the snake (thus making the snake longer in total).
-                    if not muted: random.choice(trills).play()
+                    # cell in the snake (thus making the snake longer in total)
+                    if not muted:
+                        random.choice(trills).play()
                     # Move food to new spot
                     if not valid_spots:
                         perfect_score = True
@@ -574,9 +588,11 @@ def game_start(speed, muted):
 
         update_display(paused)
 
-        if not paused: mvmt_timer -= 1
+        if not paused:
+            mvmt_timer -= 1
         frame_counter += 1
         clock.tick(FPS)
+
 
 if len(sys.argv) == 1:
     muted = False
